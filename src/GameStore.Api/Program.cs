@@ -1,23 +1,34 @@
+using GameStore.Application.Features.Catalog;
+using GameStore.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddInfrastructure();
+builder.Services.AddScoped<ProductService>();
+
+// CORS: permite que la web (Vite) llame a la API durante el desarrollo.
+const string WebCors = "WebCors";
+builder.Services.AddCors(options =>
+    options.AddPolicy(WebCors, policy =>
+        policy.WithOrigins("http://localhost:5075")
+    .AllowAnyHeader()
+    .AllowAnyMethod()));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+else
+{
+    app.UseHttpsRedirection();
+}
 
-app.UseHttpsRedirection();
-
+app.UseCors(WebCors);
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
