@@ -12,7 +12,7 @@ builder.Services.AddScoped<ProductService>();
 const string WebCors = "WebCors";
 builder.Services.AddCors(options =>
     options.AddPolicy(WebCors, policy =>
-        policy.WithOrigins("http://localhost:5075")
+        policy.WithOrigins("http://localhost:5173")
     .AllowAnyHeader()
     .AllowAnyMethod()));
 
