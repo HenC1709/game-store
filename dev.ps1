@@ -1,0 +1,2 @@
+Start-Process powershell -ArgumentList "-NoExit", "-Command", "dotnet watch --project src/GameStore.Api --launch-profile http"
+Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd web; npm run dev"
