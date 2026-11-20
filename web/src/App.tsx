@@ -1,11 +1,13 @@
 import CatalogPage from './pages/CatalogPage'
+import Navbar from './components/Navbar'
 
 export default function App() {
   return (
-    <main>
-      <CatalogPage />
-      <Navbar/>
-    </main>
+    <>
+      <Navbar />
+      <main>
+        <CatalogPage />
+      </main>
+    </>
   )
 }
-import Navbar from './components/Navbar'
