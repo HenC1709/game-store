@@ -32,3 +32,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Necesario para que los tests de integración (WebApplicationFactory<Program>) puedan ver esta clase.
+public partial class Program;
