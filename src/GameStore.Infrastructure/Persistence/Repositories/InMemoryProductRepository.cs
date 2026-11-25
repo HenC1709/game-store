@@ -16,6 +16,29 @@ public class InMemoryProductRepository : IProductRepository
         new() { Id = 6, Name = "Stardew Valley", Description = "Simulador de granja.", Platform = "PC", Genre = "Simulación", Price = 14.99m, Stock = 30, ImageUrl = "https://placehold.co/300x400?text=Stardew" },
     ];
 
-    public Task<IReadOnlyList<Product>> GetAllAsync() =>
-        Task.FromResult<IReadOnlyList<Product>>(Products);
+    public Task<IReadOnlyList<Product>> GetAllAsync(ProductFilter filter)
+    {
+        IEnumerable<Product> query = Products;
+
+        var search = filter.Search?.Trim();
+        var platform = filter.Platform?.Trim();
+        var genre = filter.Genre?.Trim();
+
+        if (!string.IsNullOrEmpty(search))
+            query = query.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase));
+
+        if (!string.IsNullOrEmpty(platform))
+            query = query.Where(p => p.Platform.Equals(platform, StringComparison.OrdinalIgnoreCase));
+
+        if (!string.IsNullOrEmpty(genre))
+            query = query.Where(p => p.Genre.Equals(genre, StringComparison.OrdinalIgnoreCase));
+
+        if (filter.MaxPrice is { } maxPrice)
+            query = query.Where(p => p.Price <= maxPrice);
+
+        return Task.FromResult<IReadOnlyList<Product>>(query.ToList());
+    }
+
+    public Task<Product?> GetByIdAsync(int id) =>
+        Task.FromResult(Products.FirstOrDefault(p => p.Id == id));
 }
