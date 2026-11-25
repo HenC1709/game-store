@@ -5,7 +5,7 @@ import Spinner from '../components/Spinner'
 import { useProducts } from '../hooks/useProducts'
 
 export default function CatalogPage() {
-    const { products, loading, error } = useProducts()
+    const { products, loading, error } = useProducts({ platform: 'PC' })
 
     if (loading) return <Spinner />
     if (error) return <ErrorMessage message={error} />
